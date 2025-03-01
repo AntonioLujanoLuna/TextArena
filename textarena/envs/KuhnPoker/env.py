@@ -54,16 +54,10 @@ class KuhnPokerEnv(ta.Env):
 
     def reset(self, num_players: int, seed: Optional[int] = None):
         """ Reset the environment """
-        self.state = ta.State(
-            num_players=num_players,
-            min_players=2,
-            max_players=2,
-            max_turns=self.max_rounds,
-            check_truncated=False
-        )
+        self.state = ta.State(num_players=num_players, min_players=2, max_players=2, max_turns=self.max_rounds, check_truncated=False, seed=seed)
 
         game_state = {"pot": None, "player_chips": {0: 0, 1: 0}, "current_round": 1, "starting_player": 0}
-        self.state.reset(game_state=game_state, player_prompt_function=self._generate_player_prompt, seed=seed)
+        self.state.reset(game_state=game_state, player_prompt_function=self._generate_player_prompt)
 
         # Initialize the first round
         self._init_round()

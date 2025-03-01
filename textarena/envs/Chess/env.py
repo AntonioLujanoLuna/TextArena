@@ -46,13 +46,7 @@ class ChessEnv(ta.Env):
             seed (Optional[int]): Seed for random number generator to ensure reproducibility.
         """
         # Initialize game state variables
-        self.state = ta.State(
-            num_players=num_players,
-            min_players=2, 
-            max_players=2,
-            max_turns=self.max_turns,
-            role_mapping={0: "White", 1: "Black"}
-        )
+        self.state = ta.State(num_players=num_players, min_players=2, max_players=2, max_turns=self.max_turns, role_mapping={0: "White", 1: "Black"}, seed=seed)
 
         # Initialize the chess board
         self.board = chess.Board()
@@ -61,7 +55,7 @@ class ChessEnv(ta.Env):
             "current_board": str(self.board),
             "valid_moves": ', '.join([f'[{move.uci()}]' for move in self.board.legal_moves])
         }
-        self.state.reset(seed=seed, game_state=game_state, player_prompt_function=self._generate_player_prompt)
+        self.state.reset(game_state=game_state, player_prompt_function=self._generate_player_prompt)
 
 
     def _generate_player_prompt(self, player_id: int, game_state: Dict[int, Any]) -> str:

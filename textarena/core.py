@@ -26,6 +26,7 @@ class State:
         role_mapping: Optional[Dict[int, str]] = {},
         check_truncated: Optional[bool] = True,
         error_allowance: Optional[int] = 1,
+        seed: Optional[int] = None,
     ):
         """
         Initialize the State object.
@@ -63,13 +64,14 @@ class State:
         self.role_mapping = role_mapping
         self.role_mapping[-1] = "GAME"
 
+        if seed is not None:
+            random.seed(seed)
 
     def reset(
         self,
         game_state: Dict[str, Any],
         player_prompt_function: Callable,
         executable_on_reset: Optional[List[Callable]] = None,
-        seed: Optional[int] = None,
         role_mapping = None
     ):
         """
@@ -88,9 +90,6 @@ class State:
                 self.role_mapping[pid] = role
 
         self.logs.append((GAME_ID, "Game started."))
-
-        if seed is not None:
-            random.seed(seed)
 
         self._reset_game_parameters()
 

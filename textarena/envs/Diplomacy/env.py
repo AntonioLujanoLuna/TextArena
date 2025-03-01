@@ -58,7 +58,7 @@ class DiplomacyEnv(ta.Env):
 
     def reset(self, num_players: int, seed: Optional[int] = None):
         """ Reset the environment and start a new game """
-        self.state = ta.State(num_players=num_players, min_players=3, max_players=7)
+        self.state = ta.State(num_players=num_players, min_players=3, max_players=7, seed=seed)
         
         # Initialize game engine
         self.engine = DiplomacyGameEngine(max_turns=self.max_turns)
@@ -92,11 +92,7 @@ class DiplomacyEnv(ta.Env):
 
         player_prompt_function = partial(self._generate_player_prompt, player_power_map=self.player_power_map)
         # Initialize the state
-        self.state.reset(
-            game_state=game_state,
-            player_prompt_function=player_prompt_function,
-            seed=seed,
-        )
+        self.state.reset(game_state=game_state, player_prompt_function=player_prompt_function)
         
         # Send initial game state announcement to all players
         self._announce_game_state()

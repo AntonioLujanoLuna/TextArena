@@ -99,9 +99,7 @@ class TabooEnv(ta.Env):
     def reset(self, num_players: int, seed: Optional[int] = None):
         """ Reset the Taboo game to its initial state """
         # Initialize game state 
-        self.state = ta.State(num_players=2, min_players=2, max_players=2, max_turns=self.max_turns, role_mapping={0: "Clue Giver", 1: "Guesser"})
-
-
+        self.state = ta.State(num_players=2, min_players=2, max_players=2, max_turns=self.max_turns, role_mapping={0: "Clue Giver", 1: "Guesser"}, seed=seed)
 
         word_to_guess, taboo_words = random.choice(list(self.data.items()))
 
@@ -109,7 +107,7 @@ class TabooEnv(ta.Env):
             "word_to_guess": word_to_guess,
             "taboo_words": taboo_words
         }
-        self.state.reset(seed=seed, game_state=game_state, player_prompt_function=self._generate_player_prompt)
+        self.state.reset(game_state=game_state, player_prompt_function=self._generate_player_prompt)
 
 
     def _generate_player_prompt(self, player_id: int, game_state: Dict[str, Any]) -> str:

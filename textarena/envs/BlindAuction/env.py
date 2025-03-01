@@ -83,13 +83,7 @@ class BlindAuctionEnv(ta.Env):
     def reset(self, num_players: int, seed: Optional[int] = None):
         """Reset the environment to its initial state."""
         # Create the underlying state for N players
-        self.state = ta.State(
-            num_players=num_players, 
-            min_players=3, 
-            max_players=15,
-            max_turns=self.conversation_rounds * num_players + num_players,
-            check_truncated=False
-        )
+        self.state = ta.State(num_players=num_players, min_players=3, max_players=15, max_turns=self.conversation_rounds * num_players + num_players, check_truncated=False, seed=seed)
         
         # Generate item names and values if needed
         if not self.base_item_values:
@@ -126,7 +120,7 @@ class BlindAuctionEnv(ta.Env):
         }
         
         # Reset the state
-        self.state.reset(seed=seed, game_state=game_state, player_prompt_function=self._generate_player_prompt)
+        self.state.reset(game_state=game_state, player_prompt_function=self._generate_player_prompt)
         
         # # Announce start of game
         # self.state.add_observation(

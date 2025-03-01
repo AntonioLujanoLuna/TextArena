@@ -35,13 +35,7 @@ class OthelloEnv(ta.Env):
     def reset(self, num_players: int, seed: Optional[int] = None):
         """ Reset the Othello game to its initial state """
         # Initialize game state variables
-        self.state = ta.State(
-            num_players=num_players,
-            min_players=2, 
-            max_players=2,
-            max_turns=self.max_turns,
-            role_mapping={0: "Black", 1: "White"}
-        )
+        self.state = ta.State(num_players=num_players, min_players=2, max_players=2, max_turns=self.max_turns, role_mapping={0: "Black", 1: "White"}, seed=seed)
         
         # Initialize the board (8x8)
         # Empty: '', Black: 'B', White: 'W'
@@ -68,11 +62,7 @@ class OthelloEnv(ta.Env):
             "valid_moves": valid_moves
         }
         
-        self.state.reset(
-            seed=seed, 
-            game_state=game_state, 
-            player_prompt_function=self._generate_player_prompt
-        )
+        self.state.reset(game_state=game_state, player_prompt_function=self._generate_player_prompt)
 
     def _render_board(self):
         """

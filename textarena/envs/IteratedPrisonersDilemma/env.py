@@ -48,16 +48,9 @@ class IteratedPrisonersDilemmaEnv(ta.Env):
     def reset(self, num_players: int, seed: Optional[int] = None):
         """Reset the game to initial state."""
         # Initialize game state variables
-        self.state = ta.State(
-            num_players=num_players, 
-            min_players=2, 
-            max_players=2,
-            max_turns=self.max_turns, 
-            check_truncated=True
-        )
+        self.state = ta.State(num_players=num_players, min_players=2, max_players=2, max_turns=self.max_turns, check_truncated=True, seed=seed)
 
         self.state.reset(
-            seed=seed,
             game_state={
                 "current_round": 1,
                 "current_comm_turn": 0,

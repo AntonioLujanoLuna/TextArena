@@ -38,17 +38,11 @@ class PigDiceEnv(ta.Env):
 
     def reset(self, num_players: int, seed: Optional[int] = None) -> None:
         # Create a new State
-        self.state = ta.State(
-            num_players=num_players,
-            min_players=2,
-            max_players=2,
-            max_turns=self.max_turns,
-            check_truncated=False
-        )
+        self.state = ta.State(num_players=num_players, min_players=2, max_players=2, max_turns=self.max_turns, check_truncated=False, seed=seed)
 
         # Initialize game_state
         game_state = {"scores": [0] * num_players, "turn_total": 0, "turn_count": 0}
-        self.state.reset(seed=seed, game_state=game_state, player_prompt_function=self._player_prompt)
+        self.state.reset(game_state=game_state, player_prompt_function=self._player_prompt)
         
 
     def _player_prompt(self, player_id: int, game_state: Dict[str, Any]) -> str:

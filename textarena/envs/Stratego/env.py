@@ -33,14 +33,13 @@ class StrategoEnv(ta.Env):
 
     def reset(self, num_players: int, seed: Optional[int]=None):
         """ Reset the environment to start a new game """
-        self.state = ta.State(num_players=num_players, min_players=2, max_players=2)
+        self.state = ta.State(num_players=num_players, min_players=2, max_players=2, seed=seed)
         
         ## populate the board
         self.board = self._populate_board()
 
         ## initialise the game state
         self.state.reset(
-            seed=seed,
             game_state={
                 "board": self.board,
                 "player_pieces": self.player_pieces,

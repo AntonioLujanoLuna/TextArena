@@ -47,13 +47,7 @@ class CheckersEnv(ta.Env):
             seed (Optional[int]): Random seed if needed.
         """
         # Create state and ensure exactly 2 players
-        self.state = ta.State(
-            num_players=num_players,
-            min_players=2,
-            max_players=2,
-            max_turns=self.max_turns,
-            role_mapping={0: "Red", 1: "Black"},
-        )
+        self.state = ta.State(num_players=num_players, min_players=2, max_players=2, max_turns=self.max_turns, role_mapping={0: "Red", 1: "Black"}, seed=seed)
 
         # Create the initial board layout
         self.board = self._initialize_board()
@@ -65,11 +59,7 @@ class CheckersEnv(ta.Env):
         }
 
         # Reset the environment's internal state
-        self.state.reset(
-            seed=seed,
-            game_state=game_state,
-            player_prompt_function=self._generate_player_prompt
-        )
+        self.state.reset(game_state=game_state, player_prompt_function=self._generate_player_prompt)
 
     def _initialize_board(self) -> List[List[str]]:
         """

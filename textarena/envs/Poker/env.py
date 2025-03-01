@@ -58,7 +58,7 @@ class PokerEnv(ta.Env):
     def reset(self, num_players: int, seed: Optional[int] = None):
         """ Reset the full game to its initial state """
         # Create the underlying state for N players
-        self.state = ta.State(num_players=num_players, min_players=2, max_players=15)
+        self.state = ta.State(num_players=num_players, min_players=2, max_players=15, seed=seed)
         
         # Store the basic structure of the game
         game_state = {
@@ -80,7 +80,7 @@ class PokerEnv(ta.Env):
                 "last_valid_round": 1,  # Track the last valid round number for error recovery
                 "last_valid_betting_round": 0  # Track the last valid betting round for error recovery
             }
-        self.state.reset(seed=seed, game_state=game_state, player_prompt_function=self._generate_player_prompt, executable_on_reset=[self._reset_round])
+        self.state.reset(game_state=game_state, player_prompt_function=self._generate_player_prompt, executable_on_reset=[self._reset_round])
         
         # Announce new game starting
         self.state.add_observation(

@@ -17,14 +17,14 @@ class TicTacToeEnv(ta.Env):
     
     def reset(self, num_players: int, seed: Optional[int]=None):
         """ Reset the environment to the initial state """
-        self.state = ta.State(num_players=2, min_players=2, max_players=2)
+        self.state = ta.State(num_players=2, min_players=2, max_players=2, seed=seed)
 
         self.board = [['' for _ in range(3)] for _ in range(3)]
         game_state = {
             "board": self.board,
             "rendered_board": self._render_board()
         }
-        self.state.reset(seed=seed, game_state=game_state, player_prompt_function=self._generate_player_prompt)
+        self.state.reset(game_state=game_state, player_prompt_function=self._generate_player_prompt)
 
     def _render_board(self):
         """

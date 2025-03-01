@@ -78,7 +78,7 @@ class SnakeEnv(ta.Env):
 
     def reset(self, num_players: int, seed: Optional[int] = None):
         """Initialize the environment with N snakes & apples."""
-        self.state = ta.State(num_players=num_players, min_players=2, max_players=15, max_turns=self.max_turns, check_truncated=False)
+        self.state = ta.State(num_players=num_players, min_players=2, max_players=15, max_turns=self.max_turns, check_truncated=False, seed=seed)
 
         # Initialize snakes with distinct positions
         snakes = {}
@@ -107,7 +107,7 @@ class SnakeEnv(ta.Env):
             "board_state": self._get_board_string(snakes, apples),
             "death_turn": {} # keep track of when each snake died to determine winners
         }
-        self.state.reset(seed=seed, game_state=game_state, player_prompt_function=self._generate_player_prompt)
+        self.state.reset(game_state=game_state, player_prompt_function=self._generate_player_prompt)
 
         # Clear pending actions for this new game
         self.pending_actions = {player_id: None for player_id in range(num_players)}

@@ -19,7 +19,7 @@ class SpiteAndMaliceEnv(ta.Env):
     def reset(self, num_players: int = 2, seed: Optional[int] = None):
         """ Reset the environment to start a new game """
         # Initialize the game state
-        self.state = ta.State(num_players=2, min_players=2, max_players=2, max_turns=None)
+        self.state = ta.State(num_players=2, min_players=2, max_players=2, max_turns=None, seed=seed)
         
         ## Initialize the players' payoff piles, hand, discard piles, and center piles
         random.shuffle(self.deck)
@@ -32,7 +32,6 @@ class SpiteAndMaliceEnv(ta.Env):
 
         ## Return the initial observations
         return self.state.reset(
-            seed=seed,
             game_state={
                 "players": self.players,
                 "center_piles": self.center_piles,

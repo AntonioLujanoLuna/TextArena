@@ -35,7 +35,7 @@ class MastermindEnv(ta.Env):
     def reset(self, num_players: int, seed: Optional[int] = None):
         """ Resets the environment to its initial state. """
         # Initialize game state variables
-        self.state = ta.State(num_players=num_players, min_players=1, max_players=1, max_turns=self.max_turns)
+        self.state = ta.State(num_players=num_players, min_players=1, max_players=1, max_turns=self.max_turns, seed=seed)
 
         # generate secret code 
         available_numbers = list(range(1, self.num_numbers + 1))
@@ -46,7 +46,6 @@ class MastermindEnv(ta.Env):
 
         ## return the initial observations
         self.state.reset(
-            seed=seed,
             game_state={
                 "secret_code": code,
                 "guess": [],

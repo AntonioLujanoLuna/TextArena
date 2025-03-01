@@ -39,13 +39,7 @@ class SurroundEnv(ta.Env):
             num_players (int): Number of players (2 to 15).
             seed (Optional[int]): Random seed for reproducibility.
         """
-        self.state = ta.State(
-            num_players=num_players,
-            min_players=2,
-            max_players=15,
-            max_turns=self.max_turns,
-            check_truncated=False
-        )
+        self.state = ta.State(num_players=num_players, min_players=2, max_players=15, max_turns=self.max_turns, check_truncated=False, seed=seed)
 
         players = {}
         for player_id in range(num_players):
@@ -61,11 +55,7 @@ class SurroundEnv(ta.Env):
             "death_turn": {},
             "board_state": self._get_board_string(board, players),
         }
-        self.state.reset(
-            seed=seed,
-            game_state=game_state,
-            player_prompt_function=self._generate_player_prompt
-        )
+        self.state.reset(game_state=game_state, player_prompt_function=self._generate_player_prompt)
         self.pending_actions = {player_id: None for player_id in range(num_players)}
 
     def _random_free_cell(self, current_players: Dict[int, Dict[str, Any]]) -> Optional[Tuple[int, int]]:

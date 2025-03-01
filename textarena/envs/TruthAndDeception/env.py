@@ -84,14 +84,7 @@ class TruthAndDeceptionEnv(ta.Env):
     def reset(self, num_players: int, seed: Optional[int]=None):
         """ Reset the game to its initial state. """
         # Initialize game state 
-        self.state = ta.State(
-            num_players=2,
-            min_players=2,
-            max_players=2,
-            max_turns=self.max_turns,
-            check_truncated=False,
-            role_mapping={0: "Deceiver", 1: "Guesser"}
-        )
+        self.state = ta.State(num_players=2, min_players=2, max_players=2, max_turns=self.max_turns, check_truncated=False, role_mapping={0: "Deceiver", 1: "Guesser"}, seed=seed)
 
         # Select a random set of facts
         selected_facts = random.choice(self.facts_data)
@@ -104,7 +97,6 @@ class TruthAndDeceptionEnv(ta.Env):
         random.shuffle(facts)
 
         self.state.reset(
-            seed=seed,
             game_state={
                 "fact1": {"fact": facts[0][0], "is_correct": facts[0][1]},
                 "fact2": {"fact": facts[1][0], "is_correct": facts[1][1]},
