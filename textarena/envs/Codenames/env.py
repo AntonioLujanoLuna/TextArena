@@ -5,6 +5,8 @@ from nltk import pos_tag
 from typing import Any, Dict, Optional, Tuple, List, Union
 import textarena as ta
 
+from textarena.envs.Codenames.renderer import create_board_str
+
 nltk.download("words")
 nltk.download('averaged_perceptron_tagger_eng')
 
@@ -12,6 +14,9 @@ class CodenamesEnv(ta.Env):
     """Environment for Codenames game."""
     def __init__(self, hardcore: Optional[bool] = False):
         self._load_word_list(hardcore=hardcore)
+
+    def get_board_str(self):
+        return create_board_str(game_state=self.state.game_state)
 
     def _load_word_list(self, hardcore: bool = False) -> None:
         """Load a set of words for the game."""
@@ -22,19 +27,28 @@ class CodenamesEnv(ta.Env):
         self.word_list = [
             word for word in word_list if pos_tag([word])[0][1] in ["NN"] and len(word) < 8
         ]
+        
     def reset(self, num_players: int = 4, seed: Optional[int] = None):
-        """ Reset the game state """
         self.state = ta.State(num_players=num_players, min_players=4, max_players=4)
         self._setup_board()
+        
+        # Calculate remaining words for each team
+        red_words_left = sum(1 for team in self.board.values() if team == "R")
+        blue_words_left = sum(1 for team in self.board.values() if team == "B")
         
         self.state.reset(
             seed=seed,
             game_state={
+                "board": self.board,  # Add board to game_state
                 "turn": 0,
-                "team_turn": 0,  # 0 for Red, 1 for Blue
+                "team_turn": 0,
+                "phase": "clue",  # Add phase tracking
                 "guessed_words": set(),
-                "last_clue": None,  # Initialize last clue
-                "last_number": 0,    # Initialize last number
+                "last_clue": None,
+                "last_number": 0,
+                "remaining_guesses": 0,
+                "red_words_left": red_words_left,    # Add for renderer
+                "blue_words_left": blue_words_left,  # Add for renderer
             },
             player_prompt_function=self._generate_player_prompt
         )
@@ -86,9 +100,7 @@ class CodenamesEnv(ta.Env):
                 else:
                     view += f"{word:<8}\n"
 
-        return view
-
-
+        return view    
 
     def _generate_player_prompt(self, player_id: int, game_state: Dict[str, Any]) -> str:
         """Generate a prompt for the player, explaining game rules and rendering the board."""

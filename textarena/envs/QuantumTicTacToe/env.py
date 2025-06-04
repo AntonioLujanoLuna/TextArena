@@ -1,13 +1,18 @@
 import re
-from typing import Optional, Dict, Tuple, List, Any, Set
+from typing import Optional, Dict, Tuple, List, Any
 import textarena as ta
+
+from textarena.envs.QuantumTicTacToe.renderer import create_board_str
 
 class QuantumTicTacToeEnv(ta.Env):
     """ Quantum Tic Tac Toe: Players place superpositions of moves, resolved when cycles form. """
     def __init__(self):
         super().__init__()
         self.cell_mapping = {i * 3 + j: (i, j) for i in range(3) for j in range(3)}
-        self.move_count = 0
+        self.player_move_counts = {0: 0, 1: 1}  # Player 0 starts at 0 (even), Player 1 at 1 (odd)
+
+    def get_board_str(self):
+        return create_board_str(game_state=self.state.game_state)
 
     def reset(self, num_players: int, seed: Optional[int] = None):
         self.state = ta.State(num_players=2, min_players=2, max_players=2, max_turns=25)

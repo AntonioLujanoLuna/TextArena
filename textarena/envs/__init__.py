@@ -273,6 +273,9 @@ register(id="EmojiCharade-v0", entry_point="textarena.envs.EmojiCharade.env:Emoj
 # ThreePlayerTicTacToe (3 players)
 register(id="ThreePlayerTicTacToe-v0", entry_point="textarena.envs.ThreePlayerTicTacToe.env:ThreePlayerTicTacToeEnv")
 
+# Bullshit
+register(id="Bullshit-v0", entry_point="textarena.envs.Bullshit.env:BullshitEnv")
+
 # classical evals as single-player envs
 
 # GSM8K - Grade School Math Word Problems
